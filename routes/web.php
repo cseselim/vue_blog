@@ -17,4 +17,5 @@
 
 Route::group(['namespace' => 'Admin'], function(){
 	Route::get('/', 'HomeController@dashboard')->name('dashboard');
+	Route::get('/{anypath}', 'HomeController@dashboard')->where('path','.*');
 });

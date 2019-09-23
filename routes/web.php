@@ -18,4 +18,6 @@
 Route::group(['namespace' => 'Admin'], function(){
 	Route::get('/', 'HomeController@dashboard')->name('dashboard');
 	Route::get('/{anypath}', 'HomeController@dashboard')->where('path','.*');
+
+	Route::post('/addcategory','CategoryController@addcategory')->name('addcategory');
 });

@@ -14,14 +14,15 @@
                             </div>
                             <!-- /.card-header -->
                             <!-- form start -->
-                            <form role="form">
+                            <form method="post" @submit.prevent="addnewcat">
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1">Name</label>
-                                        <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter category">
+                                        <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Enter category" v-model="form.name" name="name" :class="{ 'is-invalid': form.errors.has('name') }">
+                                        <has-error :form="form" field="name"></has-error>
                                     </div>
                                     <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                        <input type="checkbox" class="form-check-input" id="exampleCheck1" v-model="form.status" name="status" value="1">
                                         <label class="form-check-label" for="exampleCheck1">Status</label>
                                     </div>
                                 </div>
@@ -38,3 +39,41 @@
         </section>
     </div>
 </template>
+
+<script>
+    export default {
+
+        data () {
+            return {
+              // Create a new form instance
+              form: new Form({
+                name: '',
+                status: 0,
+              })
+            }
+          },
+        methods: {
+            addnewcat () {
+              // Submit the form via a POST request
+              this.form.post('/addcategory')
+                .then(({ data }) => { 
+                    this.$router.push('/categorylist');
+                    Toast.fire({
+                      type: 'success',
+                      title: 'Category added in successfully'
+                    })
+                })
+                .catch(({ data }) => { 
+                    console.log(error) 
+                })           
+            }
+        },
+        mounted() {
+            console.log('Component mounted.')
+        }
+    }
+</script>
+
+<style scoped>
+  
+</style>

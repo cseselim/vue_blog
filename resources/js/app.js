@@ -18,14 +18,30 @@ import {routes} from './routers.js';
 /*Vue.component('admin-main', require('./components/admin/AdminMaster.vue'));*/
 /*Vue.component('home', require('./components/admin/adminhome.vue').default);*/
 
+//input form handle by vform
+import { Form, HasError, AlertError } from 'vform'
+window.Form = Form;
+Vue.component(HasError.name, HasError)
+Vue.component(AlertError.name, AlertError)
 
+//Message handle by sweetalert2
+import Swal from 'sweetalert2'
+window.Swal = Swal;
+const Toast = Swal.mixin({
+  toast: true,
+  position: 'top-end',
+  showConfirmButton: false,
+  timer: 4000
+})
+window.Toast = Toast;
 
-
+//vue js router handle
 const router = new VueRouter({
   routes, // short for `routes: routes`
   mode: 'history'
 })
 
+//vue js action
 const app = new Vue({
     el: '#app',
     router

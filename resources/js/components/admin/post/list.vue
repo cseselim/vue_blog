@@ -28,7 +28,7 @@
                   <td><img :src="post.image" alt="image" style="width: 54px"></td>
                   <td>
                     <router-link to=''>Edit</router-link> |
-                    <a href="">delete</a>
+                    <a href="" @click.prevent="deletepost(post.id)">delete</a>
                   </td>
                   
                 </tr>
@@ -61,7 +61,16 @@
           }
         },
         methods:{
-          
+          deletepost(id){
+            axios.get('/postdelete/'+id)
+            .then((response ) => { 
+                this.$store.dispatch('getallpost')
+                Toast.fire({
+                  type: 'success',
+                  title: 'Post Delete successfully'
+                })
+            })
+          }
         }
     }
 </script>

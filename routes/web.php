@@ -26,4 +26,6 @@ Route::group(['namespace' => 'Admin'], function(){
 	Route::get('/deletecategory/{id}','CategoryController@deletecategory')->name('deletecategory');
 
 	Route::get('/allpostget','PostController@index')->name('allpostget');
+	Route::post('/savepost','PostController@savepost')->name('savepost');
+	Route::get('/postdelete/{id}','PostController@deletepost')->name('postdelete');
 });

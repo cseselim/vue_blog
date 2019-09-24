@@ -2028,6 +2028,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2036,28 +2038,50 @@ __webpack_require__.r(__webpack_exports__);
         title: '',
         category_id: '',
         description: '',
-        image: ''
+        image: '',
+        status: ''
       })
     };
   },
-  methods: {
-    /*addnewpost () {
-      // Submit the form via a POST request
-      this.form.post('/addnewpost')
-        .then(({ data }) => { 
-            this.$router.push('/postlist');
-            Toast.fire({
-              type: 'success',
-              title: 'Post created successfully'
-            })
-        })
-        .catch(({ data }) => { 
-            console.log(error) 
-        })           
-    }*/
-  },
   mounted: function mounted() {
-    console.log('Component mounted.');
+    this.$store.dispatch('allcategory');
+  },
+  computed: {
+    allcategory: function allcategory() {
+      return this.$store.getters.getCategory;
+    }
+  },
+  methods: {
+    /*changePhoto(event){
+        let file = event.target.files[0];
+          if(file.size>1048576){
+             swal({
+                 type: 'error',
+                 title: 'Oops...',
+                 text: 'Something went wrong!',
+                 footer: '<a href>Why do I have this issue?</a>'
+             })
+         }else{
+             let reader = new FileReader();
+             reader.onload = event => {
+                 this.form.image = event.target.result
+                 console.log(event.target.result)
+             };
+             reader.readAsDataURL(file);
+         }
+     },*/
+    addnewPost: function addnewPost() {
+      var _this = this;
+
+      this.form.post('/savepost').then(function () {
+        _this.$router.push('/postlist');
+
+        Toast.fire({
+          type: 'success',
+          title: 'Post added successfully'
+        });
+      })["catch"](function () {});
+    }
   }
 });
 
@@ -2133,7 +2157,20 @@ __webpack_require__.r(__webpack_exports__);
       return this.$store.getters.getAllpost;
     }
   },
-  methods: {}
+  methods: {
+    deletepost: function deletepost(id) {
+      var _this = this;
+
+      axios.get('/postdelete/' + id).then(function (response) {
+        _this.$store.dispatch('getallpost');
+
+        Toast.fire({
+          type: 'success',
+          title: 'Post Delete successfully'
+        });
+      });
+    }
+  }
 });
 
 /***/ }),
@@ -42063,150 +42100,199 @@ var render = function() {
                   on: {
                     submit: function($event) {
                       $event.preventDefault()
-                      return _vm.addnewpost($event)
+                      return _vm.addnewPost($event)
                     }
                   }
                 },
                 [
                   _c("div", { staticClass: "card-body" }, [
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("label", { attrs: { for: "exampleInputEmail1" } }, [
-                        _vm._v("Title")
-                      ]),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.form.title,
-                            expression: "form.title"
-                          }
-                        ],
-                        staticClass: "form-control",
-                        class: { "is-invalid": _vm.form.errors.has("title") },
-                        attrs: {
-                          type: "text",
-                          id: "exampleInputEmail1",
-                          placeholder: "Enter Title",
-                          name: "title"
-                        },
-                        domProps: { value: _vm.form.title },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(_vm.form, "title", $event.target.value)
-                          }
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("label", [_vm._v("Select Category")]),
-                      _vm._v(" "),
-                      _c(
-                        "select",
-                        {
+                    _c(
+                      "div",
+                      { staticClass: "form-group" },
+                      [
+                        _c("label", { attrs: { for: "exampleInputEmail1" } }, [
+                          _vm._v("Title")
+                        ]),
+                        _vm._v(" "),
+                        _c("input", {
                           directives: [
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.form.category_id,
-                              expression: "form.category_id"
+                              value: _vm.form.title,
+                              expression: "form.title"
                             }
                           ],
                           staticClass: "form-control",
-                          attrs: { name: "category_id" },
+                          class: { "is-invalid": _vm.form.errors.has("title") },
+                          attrs: {
+                            type: "text",
+                            id: "exampleInputEmail1",
+                            placeholder: "Enter Title",
+                            name: "title"
+                          },
+                          domProps: { value: _vm.form.title },
                           on: {
-                            change: function($event) {
-                              var $$selectedVal = Array.prototype.filter
-                                .call($event.target.options, function(o) {
-                                  return o.selected
-                                })
-                                .map(function(o) {
-                                  var val = "_value" in o ? o._value : o.value
-                                  return val
-                                })
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(_vm.form, "title", $event.target.value)
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("has-error", {
+                          attrs: { form: _vm.form, field: "name" }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "form-group" },
+                      [
+                        _c("label", [_vm._v("Select Category")]),
+                        _vm._v(" "),
+                        _c(
+                          "select",
+                          {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.form.category_id,
+                                expression: "form.category_id"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: { name: "category_id" },
+                            on: {
+                              change: function($event) {
+                                var $$selectedVal = Array.prototype.filter
+                                  .call($event.target.options, function(o) {
+                                    return o.selected
+                                  })
+                                  .map(function(o) {
+                                    var val = "_value" in o ? o._value : o.value
+                                    return val
+                                  })
+                                _vm.$set(
+                                  _vm.form,
+                                  "category_id",
+                                  $event.target.multiple
+                                    ? $$selectedVal
+                                    : $$selectedVal[0]
+                                )
+                              }
+                            }
+                          },
+                          [
+                            _c(
+                              "option",
+                              { attrs: { value: "", disabled: "" } },
+                              [_vm._v("Select One")]
+                            ),
+                            _vm._v(" "),
+                            _vm._l(_vm.allcategory, function(cat) {
+                              return _c("option", { attrs: { value: "1" } }, [
+                                _vm._v(_vm._s(cat.name))
+                              ])
+                            })
+                          ],
+                          2
+                        ),
+                        _vm._v(" "),
+                        _c("has-error", {
+                          attrs: { form: _vm.form, field: "category_id" }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "form-group" },
+                      [
+                        _c("label", { attrs: { for: "exampleInputEmail1" } }, [
+                          _vm._v("Discription")
+                        ]),
+                        _vm._v(" "),
+                        _c("textarea", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.description,
+                              expression: "form.description"
+                            }
+                          ],
+                          staticClass: "textarea",
+                          class: {
+                            "is-invalid": _vm.form.errors.has("description")
+                          },
+                          staticStyle: {
+                            width: "100%",
+                            height: "200px",
+                            "font-size": "14px",
+                            "line-height": "18px",
+                            border: "1px solid #dddddd",
+                            padding: "10px"
+                          },
+                          attrs: {
+                            placeholder: "Enter discription here",
+                            name: "description"
+                          },
+                          domProps: { value: _vm.form.description },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
                               _vm.$set(
                                 _vm.form,
-                                "category_id",
-                                $event.target.multiple
-                                  ? $$selectedVal
-                                  : $$selectedVal[0]
+                                "description",
+                                $event.target.value
                               )
                             }
                           }
-                        },
-                        [
-                          _c("option", { attrs: { value: "1" } }, [
-                            _vm._v("option 1")
-                          ]),
-                          _vm._v(" "),
-                          _c("option", { attrs: { value: "2" } }, [
-                            _vm._v("option 2")
-                          ]),
-                          _vm._v(" "),
-                          _c("option", { attrs: { value: "3" } }, [
-                            _vm._v("option 3")
-                          ]),
-                          _vm._v(" "),
-                          _c("option", { attrs: { value: "4" } }, [
-                            _vm._v("option 4")
-                          ]),
-                          _vm._v(" "),
-                          _c("option", { attrs: { value: "5" } }, [
-                            _vm._v("option 5")
-                          ])
-                        ]
-                      )
-                    ]),
+                        }),
+                        _vm._v(" "),
+                        _c("has-error", {
+                          attrs: { form: _vm.form, field: "description" }
+                        })
+                      ],
+                      1
+                    ),
                     _vm._v(" "),
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("label", { attrs: { for: "exampleInputEmail1" } }, [
-                        _vm._v("Discription")
-                      ]),
-                      _vm._v(" "),
-                      _c("textarea", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.form.description,
-                            expression: "form.description"
-                          }
-                        ],
-                        staticClass: "textarea",
-                        staticStyle: {
-                          width: "100%",
-                          height: "200px",
-                          "font-size": "14px",
-                          "line-height": "18px",
-                          border: "1px solid #dddddd",
-                          padding: "10px"
-                        },
-                        attrs: {
-                          placeholder: "Enter discription here",
-                          name: "description"
-                        },
-                        domProps: { value: _vm.form.description },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(
-                              _vm.form,
-                              "description",
-                              $event.target.value
-                            )
-                          }
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _vm._m(0),
+                    _c(
+                      "div",
+                      { staticClass: "form-group" },
+                      [
+                        _c("label", { attrs: { for: "exampleInputFile" } }, [
+                          _vm._v("Image")
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "input-group" },
+                          [
+                            _vm._m(0),
+                            _vm._v(" "),
+                            _c("has-error", {
+                              attrs: { form: _vm.form, field: "category_id" }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c("has-error", {
+                          attrs: { form: _vm.form, field: "description" }
+                        })
+                      ],
+                      1
+                    ),
                     _vm._v(" "),
                     _c("div", { staticClass: "form-check" }, [
                       _c("input", {
@@ -42222,11 +42308,12 @@ var render = function() {
                         attrs: {
                           type: "checkbox",
                           id: "exampleCheck1",
-                          name: "status"
+                          name: "status",
+                          value: "1"
                         },
                         domProps: {
                           checked: Array.isArray(_vm.form.status)
-                            ? _vm._i(_vm.form.status, null) > -1
+                            ? _vm._i(_vm.form.status, "1") > -1
                             : _vm.form.status
                         },
                         on: {
@@ -42235,7 +42322,7 @@ var render = function() {
                               $$el = $event.target,
                               $$c = $$el.checked ? true : false
                             if (Array.isArray($$a)) {
-                              var $$v = null,
+                              var $$v = "1",
                                 $$i = _vm._i($$a, $$v)
                               if ($$el.checked) {
                                 $$i < 0 &&
@@ -42285,32 +42372,20 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group" }, [
-      _c("label", { attrs: { for: "exampleInputFile" } }, [_vm._v("Image")]),
+    return _c("div", { staticClass: "custom-file" }, [
+      _c("input", {
+        staticClass: "custom-file-input",
+        attrs: { name: "image", type: "file", id: "exampleInputFile" }
+      }),
       _vm._v(" "),
-      _c("div", { staticClass: "input-group" }, [
-        _c("div", { staticClass: "custom-file" }, [
-          _c("input", {
-            staticClass: "custom-file-input",
-            attrs: { type: "file", id: "exampleInputFile" }
-          }),
-          _vm._v(" "),
-          _c(
-            "label",
-            {
-              staticClass: "custom-file-label",
-              attrs: { for: "exampleInputFile" }
-            },
-            [_vm._v("Choose image")]
-          )
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "input-group-append" }, [
-          _c("span", { staticClass: "input-group-text", attrs: { id: "" } }, [
-            _vm._v("Upload")
-          ])
-        ])
-      ])
+      _c(
+        "label",
+        {
+          staticClass: "custom-file-label",
+          attrs: { for: "exampleInputFile" }
+        },
+        [_vm._v("Choose image")]
+      )
     ])
   },
   function() {
@@ -42407,7 +42482,19 @@ var render = function() {
                         _vm._v("Edit")
                       ]),
                       _vm._v(" |\n                "),
-                      _c("a", { attrs: { href: "" } }, [_vm._v("delete")])
+                      _c(
+                        "a",
+                        {
+                          attrs: { href: "" },
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              return _vm.deletepost(post.id)
+                            }
+                          }
+                        },
+                        [_vm._v("delete")]
+                      )
                     ],
                     1
                   )

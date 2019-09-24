@@ -8,11 +8,22 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
+
+//Vue reouter import
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
-
-
+//routers import from routers.js
 import {routes} from './routers.js';
+
+
+//Vuex library import
+import Vuex from 'vuex'
+Vue.use(Vuex)
+import storeData from './store/index.js'
+
+const store = new Vuex.Store(
+  	storeData
+)
 
 /*Vue.component('example-component', require('./components/ExampleComponent.vue').default);*/
 /*Vue.component('admin-main', require('./components/admin/AdminMaster.vue'));*/
@@ -38,11 +49,12 @@ window.Toast = Toast;
 //vue js router handle
 const router = new VueRouter({
   routes, // short for `routes: routes`
-  mode: 'history'
+  mode: 'hash'
 })
 
 //vue js action
 const app = new Vue({
     el: '#app',
-    router
+    router,
+    store
 });

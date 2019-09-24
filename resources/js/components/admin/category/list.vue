@@ -9,40 +9,42 @@
             </div>
             
             <!-- /.card-header -->
-            <div class="card-body">
-              <table id="myTable" class="table table-bordered table-striped">
+            <div class="container">
+              <div class="row">
+                <div class="offset-md-2 col-md-8">
+                  <div class="card-body">
+              <table id="myTable1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th>Rendering engine</th>
-                  <th>Browser</th>
-                  <th>Platform(s)</th>
-                  <th>Engine version</th>
-                  <th>CSS grade</th>
+                  <th>S.No</th>
+                  <th>Name</th>
+                  <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                  <td>Trident</td>
-                  <td>Internet
-                    Explorer 4.0
+                <tr v-for='(category,index) in allcategory' :key='category.id'>
+                  <td>{{ index+1 }}</td>
+                  <td>{{ category.name }}</td>
+                  <td>
+                    <router-link :to="'/editcategory/' + category.id">edit</router-link>
+                    <a href="" @click.prevent="deletecat(category.id)">delete</a>
                   </td>
-                  <td>Win 95+</td>
-                  <td> 4</td>
-                  <td>X</td>
                 </tr>
 
                 </tbody>
                 <tfoot>
                 <tr>
-                  <th>Rendering engine</th>
-                  <th>Browser</th>
-                  <th>Platform(s)</th>
-                  <th>Engine version</th>
-                  <th>CSS grade</th>
+                  <th>S.No</th>
+                  <th>Name</th>
+                  <th>Action</th>
                 </tr>
                 </tfoot>
               </table>
             </div>
+                </div>
+              </div>
+            </div>
+            
             <!-- /.card-body -->
           </div>
     </div>
@@ -51,7 +53,24 @@
 <script>
     export default {
         mounted() {
-            console.log('Component mounted.')
+            this.$store.dispatch('allcategory')
+        },
+        computed:{
+          allcategory() {
+            return this.$store.getters.getCategory
+          }
+        },
+        methods:{
+          deletecat(id){
+            axios.get('/deletecategory/'+id)
+            .then((response ) => { 
+                this.$store.dispatch('allcategory')
+                Toast.fire({
+                  type: 'success',
+                  title: 'Category delete successfully'
+                })
+            })
+          }
         }
     }
 </script>

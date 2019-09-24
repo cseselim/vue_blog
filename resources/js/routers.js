@@ -3,7 +3,7 @@ import adminhome from './components/admin/adminhome.vue';
 
 import categorylist from './components/admin/category/list.vue';
 import addcategory from './components/admin/category/addnew.vue';
-import viewcategory from './components/admin/category/view.vue';
+import editcategory from './components/admin/category/edit.vue';
 
 import postlist from './components/admin/post/list.vue';
 import addpost from './components/admin/post/addnew.vue';
@@ -15,7 +15,7 @@ export const routes = [
 
   { path: '/categorylist',component: categorylist},
   { path: '/addcategory',component: addcategory},
-  { path: '/viewcategory',component: viewcategory},
+  { path: '/editcategory/:id',component: editcategory},
 
   { path: '/postlist',component: postlist},
   { path: '/addpost',component: addpost},

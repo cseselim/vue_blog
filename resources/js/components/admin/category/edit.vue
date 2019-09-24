@@ -7,14 +7,14 @@
                     <div class="offset-md-2 col-md-8">
                         <div class="card card-primary">
                             <div class="card-header">
-                                <h3 class="card-title">Add New Category</h3>
+                                <h3 class="card-title">Add New Category {{this.$route.params.id}}</h3>
                                 <h6 class="text-right">
                                     <router-link to="categorylist">Back</router-link>
                                 </h6>
                             </div>
                             <!-- /.card-header -->
                             <!-- form start -->
-                            <form method="post" @submit.prevent="addnewcat">
+                            <form method="post" @submit.prevent="updatecategory()">
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1">Name</label>
@@ -42,36 +42,36 @@
 
 <script>
     export default {
+    	name: "Edit",
+    	mounted() {
+            axios.get(`/editcategory/${this.$route.params.id}`)
+            .then((response) => {
+                this.form.fill(response.data.category)
+            })  
+        },
 
         data () {
             return {
               // Create a new form instance
               form: new Form({
-                name: '',
-                status: 0,
+                name:'',
+                status: '',
               })
             }
-        },
-
+          },
         methods: {
-            addnewcat () {
-              // Submit the form via a POST request
-              this.form.post('/addcategory')
-                .then(({ data }) => { 
-                    this.$router.push('/categorylist');
-                    Toast.fire({
-                      type: 'success',
-                      title: 'Category added in successfully'
-                    })
+            updatecategory(){
+                this.form.post(`/updatecategory/${this.$route.params.id}`)
+                .then((response) => {
+                this.$router.push('/categorylist');
+                Toast.fire({
+                  type: 'success',
+                  title: 'Category Updated successfully'
                 })
-                .catch(({ data }) => { 
-                    console.log(error) 
-                })           
-            }
-        },
-        mounted() {
-            console.log('Component mounted.')
+            })
+            } 
         }
+        
     }
 </script>
 

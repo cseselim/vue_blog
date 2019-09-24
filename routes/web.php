@@ -17,7 +17,13 @@
 
 Route::group(['namespace' => 'Admin'], function(){
 	Route::get('/', 'HomeController@dashboard')->name('dashboard');
-	Route::get('/{anypath}', 'HomeController@dashboard')->where('path','.*');
+	/*Route::get('/{anypath}', 'HomeController@dashboard')->where('path','.*');*/
 
 	Route::post('/addcategory','CategoryController@addcategory')->name('addcategory');
+	Route::get('/category','CategoryController@allcategory')->name('allcategory');
+	Route::get('/editcategory/{id}','CategoryController@editcategory')->name('editcategory');
+	Route::post('/updatecategory/{id}','CategoryController@updatecategory')->name('updatecategory');
+	Route::get('/deletecategory/{id}','CategoryController@deletecategory')->name('deletecategory');
+
+	Route::get('/allpostget','PostController@index')->name('allpostget');
 });

@@ -14,7 +14,7 @@
                             </div>
                             <!-- /.card-header -->
                             <!-- form start -->
-                            <form role="form" enctype="multipart/form-data" @submit.prevent="addnewPost">
+                            <form role="form" enctype="multipart/form-data" @submit.prevent="updatepost">
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1">Title</label>
@@ -25,7 +25,7 @@
                                         <label>Select Category</label>
                                         <select class="form-control" v-model="form.category_id" name="category_id">
                                           <option value="" disabled >Select One</option>
-                                          <option value="1" v-for='cat in allcategory'>{{ cat.name }}</option>
+                                          <option :value="cat.id" v-for='cat in allcategory'>{{ cat.name }}</option>
                                         </select>
                                     </div>
                                     <div class="form-group">
@@ -35,7 +35,7 @@
                                     </div>
                                     <div class="form-group" >
                                         <input @change = "changePhoto($event)" name="image" type="file" :class="{ 'is-invalid': form.errors.has('image') }">
-                                        <img :src="form.image" alt="" width="80" height="80">
+                                        <img :src="updateImage()" alt="" width="80" height="80">
                                         <has-error :form="form" field="image"></has-error>
                                     </div>
 
@@ -59,9 +59,25 @@
 </template>
 
 <script>
-    export default {
+       export default {
+      
+      mounted() { // when page then this function load primary and get data from editpost route by id
+            
+            this.$store.dispatch('allcategory'); //for category load action first
 
-        data () {
+            axios.get(`/editpost/${this.$route.params.id}`)
+            .then((response) => {
+        
+                this.form.fill(response.data.post)
+            })  
+        },
+        computed:{
+          allcategory() {
+            return this.$store.getters.getCategory //get all category after dispath allcategory
+          }
+        },
+
+        data () { //get data then fill up all input field
             return {
               // Create a new form instance
               form: new Form({
@@ -72,53 +88,26 @@
                 status: '',
               })
             }
-        },
-
-        mounted() {
-            this.$store.dispatch('allcategory')
-        },
-        computed:{
-          allcategory() {
-            return this.$store.getters.getCategory
-          }
-        },
-
+          },
         methods: {
-
-            changePhoto(event){
-                let file = event.target.files[0];
-
-                 if(file.size>1048576){
-                     swal({
-                         type: 'error',
-                         title: 'Oops...',
-                         text: 'Something went wrong!',
-                         footer: '<a href>Why do I have this issue?</a>'
-                     })
-                 }else{
-                     let reader = new FileReader();
-                     reader.onload = event => {
-                         this.form.image = event.target.result
-                     };
-                     reader.readAsDataURL(file);
-                 }
-
+            updateImage(){ //image display on form
+                let img = this.form.image;
+                if(img.length>100){
+                    return  this.form.image
+                }else{
+                    return `uploadimage/${this.form.image}`
+                }
             },
-
-            addnewPost(){
-                this.form.post('/savepost')
-                    .then(()=>{
-                        this.$router.push('/postlist')
-                        Toast.fire({
-                          type: 'success',
-                          title: 'Post added successfully'
-                        })
-                    })
-                    .catch(()=>{
-
-                    })
-            }
-        
+            updatepost(){
+                this.form.post(`/updatepost/${this.$route.params.id}`)
+                .then((response) => {
+                this.$router.push('/postlist');
+                Toast.fire({
+                  type: 'success',
+                  title: 'Post Updated successfully'
+                })
+            })
+            } 
         }
         
     }

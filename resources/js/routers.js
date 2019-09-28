@@ -7,7 +7,7 @@ import editcategory from './components/admin/category/edit.vue';
 
 import postlist from './components/admin/post/list.vue';
 import addpost from './components/admin/post/addnew.vue';
-import viewpost from './components/admin/post/view.vue';
+import editpost from './components/admin/post/edit.vue';
 
 
 export const routes = [
@@ -19,5 +19,5 @@ export const routes = [
 
   { path: '/postlist',component: postlist},
   { path: '/addpost',component: addpost},
-  { path: '/viewpost',component: viewpost},
+  { path: '/editpost/:id',component: editpost},
 ]

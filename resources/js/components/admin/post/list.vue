@@ -25,9 +25,9 @@
                   <td>{{ index+1 }}</td>
                   <td>{{post.title}}</td>
                   <td>{{post.description}}</td>
-                  <td><img :src="post.image" alt="image" style="width: 54px"></td>
+                  <td><img :src="ourImage(post.image)" alt="image" style="width: 54px"></td>
                   <td>
-                    <router-link to=''>Edit</router-link> |
+                    <router-link :to="'/editpost/' + post.id">Edit</router-link> |
                     <a href="" @click.prevent="deletepost(post.id)">delete</a>
                   </td>
                   
@@ -61,6 +61,9 @@
           }
         },
         methods:{
+          ourImage(img){
+              return "uploadimage/"+img;
+          },
           deletepost(id){
             axios.get('/postdelete/'+id)
             .then((response ) => { 

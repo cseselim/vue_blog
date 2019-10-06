@@ -2180,27 +2180,51 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    updateImage: function updateImage() {
-      //image display on form
-      var img = this.form.image;
+    changePhoto: function changePhoto(event) {
+      var _this2 = this;
 
-      if (img.length > 100) {
-        return this.form.image;
+      var file = event.target.files[0];
+
+      if (file.size > 1048576) {
+        swal({
+          type: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong!',
+          footer: '<a href>Why do I have this issue?</a>'
+        });
       } else {
-        return "uploadimage/".concat(this.form.image);
+        var reader = new FileReader();
+
+        reader.onload = function (event) {
+          _this2.form.image = event.target.result;
+          console.log(event.target.result);
+        };
+
+        reader.readAsDataURL(file);
       }
     },
     updatepost: function updatepost() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.form.post("/updatepost/".concat(this.$route.params.id)).then(function (response) {
-        _this2.$router.push('/postlist');
+        _this3.$router.push('/postlist');
 
         Toast.fire({
           type: 'success',
           title: 'Post Updated successfully'
         });
       });
+    },
+    updateImage: function updateImage() {
+      //image display on form
+      var img = this.form.image;
+      console.log(img);
+
+      if (img.length > 100) {
+        return this.form.image;
+      } else {
+        return "uploadimage/".concat(this.form.image);
+      }
     }
   }
 });

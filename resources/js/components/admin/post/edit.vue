@@ -90,13 +90,25 @@
             }
           },
         methods: {
-            updateImage(){ //image display on form
-                let img = this.form.image;
-                if(img.length>100){
-                    return  this.form.image
+            changePhoto(event){
+                let file = event.target.files[0];
+
+                if(file.size>1048576){
+                    swal({
+                        type: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong!',
+                        footer: '<a href>Why do I have this issue?</a>'
+                    })
                 }else{
-                    return `uploadimage/${this.form.image}`
+                    let reader = new FileReader();
+                    reader.onload = event => {
+                        this.form.image = event.target.result
+                        console.log(event.target.result)
+                    };
+                    reader.readAsDataURL(file);
                 }
+
             },
             updatepost(){
                 this.form.post(`/updatepost/${this.$route.params.id}`)
@@ -107,7 +119,16 @@
                   title: 'Post Updated successfully'
                 })
             })
-            } 
+            }, 
+            updateImage(){ //image display on form
+                let img = this.form.image;
+                console.log(img);
+                if(img.length>100){
+                    return  this.form.image
+                }else{
+                    return `uploadimage/${this.form.image}`
+                }
+            },
         }
         
     }

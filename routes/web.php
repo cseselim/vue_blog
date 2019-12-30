@@ -11,12 +11,12 @@
 |
 */
 
-/*Route::get('/', function () {
-    return view('welcome');
-});*/
+Route::get('/', function () {
+    return view('Frontend.homelayout');
+});
 
 Route::group(['namespace' => 'Admin'], function(){
-	Route::get('/', 'HomeController@dashboard')->name('dashboard');
+	Route::get('admin/', 'HomeController@dashboard')->name('dashboard');
 	/*Route::get('/{anypath}', 'HomeController@dashboard')->where('path','.*');*/
 
 	Route::post('/addcategory','CategoryController@addcategory')->name('addcategory');

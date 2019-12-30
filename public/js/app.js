@@ -59633,6 +59633,38 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/frontend/home.vue":
+/*!***************************************************!*\
+  !*** ./resources/js/components/frontend/home.vue ***!
+  \***************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+var render, staticRenderFns
+var script = {}
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_0__["default"])(
+  script,
+  render,
+  staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+component.options.__file = "resources/js/components/frontend/home.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/routers.js":
 /*!*********************************!*\
   !*** ./resources/js/routers.js ***!
@@ -59650,15 +59682,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_admin_post_list_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/admin/post/list.vue */ "./resources/js/components/admin/post/list.vue");
 /* harmony import */ var _components_admin_post_addnew_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/admin/post/addnew.vue */ "./resources/js/components/admin/post/addnew.vue");
 /* harmony import */ var _components_admin_post_edit_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/admin/post/edit.vue */ "./resources/js/components/admin/post/edit.vue");
+/* harmony import */ var _components_frontend_home_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/frontend/home.vue */ "./resources/js/components/frontend/home.vue");
 
 
 
 
 
+
+ //frontend page route
 
 
 var routes = [{
-  path: '/',
+  path: '/admin',
   component: _components_admin_adminhome_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
 }, {
   path: '/categorylist',
@@ -59678,6 +59713,10 @@ var routes = [{
 }, {
   path: '/editpost/:id',
   component: _components_admin_post_edit_vue__WEBPACK_IMPORTED_MODULE_6__["default"]
+}, //frontend page router
+{
+  path: '/',
+  component: _components_frontend_home_vue__WEBPACK_IMPORTED_MODULE_7__["default"]
 }];
 
 /***/ }),

@@ -10,8 +10,12 @@ import addpost from './components/admin/post/addnew.vue';
 import editpost from './components/admin/post/edit.vue';
 
 
+//frontend page route
+import fronthome from './components/frontend/home.vue';
+
+
 export const routes = [
-  { path: '/',component: adminhome},
+  { path: '/admin',component: adminhome},
 
   { path: '/categorylist',component: categorylist},
   { path: '/addcategory',component: addcategory},
@@ -20,4 +24,8 @@ export const routes = [
   { path: '/postlist',component: postlist},
   { path: '/addpost',component: addpost},
   { path: '/editpost/:id',component: editpost},
+  
+  //frontend page router
+  { path: '/',component: fronthome},
+
 ]
